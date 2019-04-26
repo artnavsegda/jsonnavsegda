@@ -22,8 +22,11 @@ int main()
 		exit(1);
 	}
 
+	printf ("array size %d\n",cJSON_GetArraySize(pricelines));
+
 	cJSON_ArrayForEach(priceline, pricelines)
 	{
+		printf ("subarray size %d\n",cJSON_GetArraySize(priceline));
 	}
 	
 	return 0;
