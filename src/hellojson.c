@@ -32,7 +32,18 @@ bool loadPricesFromFile(const char * fname)
 
 bool GetNumPricesInPricelist(uint8_t priceListIndex, uint8_t * numPrices)
 {
-	cJSON_GetArraySize(pricelines);
+	*numPrices = cJSON_GetArraySize(pricelines);
+}
+
+uint8_t GetPricelistsNum(void)
+{
+	uint8_t pricelistnum;
+	cJSON * priceline = NULL;
+	cJSON_ArrayForEach(priceline, pricelines)
+	{
+		pricelistnum = cJSON_GetArraySize(priceline);	
+	}
+	return pricelistnum;
 }
 
 int main()
