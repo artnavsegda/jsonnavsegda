@@ -1,9 +1,7 @@
 #include <stdio.h>
-#include "config.h"
+#include <cjson/cJSON.h>
 
 int main()
 {
-	printf(PACKAGE_STRING);
-	printf("\n");
 	return 0;
 }
