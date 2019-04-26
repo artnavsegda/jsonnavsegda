@@ -35,6 +35,7 @@ bool GetNumPricesInPricelist(uint8_t priceListIndex, uint8_t * numPrices)
 	*numPrices = cJSON_GetArraySize(pricelines);
 }
 
+//наркомания ебаная но ладно
 uint8_t GetPricelistsNum(void)
 {
 	uint8_t pricelistnum;
@@ -44,6 +45,25 @@ uint8_t GetPricelistsNum(void)
 		pricelistnum = cJSON_GetArraySize(priceline);	
 	}
 	return pricelistnum;
+}
+
+//почему блять pricevalue uint32 а не double а а а а
+bool GetPrice(uint8_t priceListIndex, uint8_t itemIndex,uint32_t * priceValue)
+{
+	cJSON * priceline = NULL;
+	cJSON * priceindex = NULL;
+	cJSON * pricevaluetmp = NULL;
+	cJSON_ArrayForEach(priceline, pricelines)
+	{
+		priceindex = cJSON_GetArrayItem(priceline,1);//или 2 ?
+		if (priceindex->valueint == itemIndex)
+		{
+			pricevaluetmp = cJSON_GetArrayItem(priceline,itemIndex+1);
+			*priceValue = pricevaluetmp->valueint;//valuedouble should be actually
+			return true;
+		}
+	}
+	return false;
 }
 
 int main()
