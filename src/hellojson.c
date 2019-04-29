@@ -44,7 +44,7 @@ uint8_t GetPricelistsNum(void)
 	{
 		pricelistnum = cJSON_GetArraySize(priceline);	
 	}
-	return pricelistnum;
+	return pricelistnum - 1;
 }
 
 //почему блять pricevalue uint32 а не double а а а а
@@ -68,7 +68,7 @@ bool GetPrice(uint8_t priceListIndex, uint8_t itemIndex,uint32_t * priceValue)
 
 int main()
 {
-	cJSON * priceline = NULL;
+	/*cJSON * priceline = NULL;
 	FILE * jsonfile = fopen("./json.txt", "r");
 	if (jsonfile == NULL)
 		exit(1);
@@ -89,7 +89,13 @@ int main()
 	cJSON_ArrayForEach(priceline, pricelines)
 	{
 		printf ("subarray size %d\n",cJSON_GetArraySize(priceline));
-	}
+	}*/
+
+	loadPricesFromFile("./json.txt");
+	printf("number of pricelists is %d\n", GetPricelistsNum());
+	unsigned char numprices;
+	GetNumPricesInPricelist(0, &numprices);
+	printf("number of pricelines is %d\n", numprices);
 
 	return 0;
 }
