@@ -10,15 +10,15 @@ bool GetNumPricesInPricelist(uint8_t priceListIndex, uint8_t * numPrices);
 bool loadPricesFromFile(const char * fname);
 
 char buffer[10000];
-cJSON * pricelines;
+cJSON * pricelines = NULL;
 
 bool loadPricesFromFile(const char * fname)
 {
-	FILE * jsonfile = fopen("./json.txt", "r");
+	FILE * jsonfile = fopen(fname, "r");
 	if (jsonfile == NULL)
-		exit(1);
+		return false;
 	if (fread(buffer,1,10000,jsonfile) == 0)
-		exit(1);
+		return false;
 
 	pricelines = cJSON_Parse(buffer);
 	if (pricelines == NULL)
@@ -26,8 +26,9 @@ bool loadPricesFromFile(const char * fname)
 		const char *error_ptr = cJSON_GetErrorPtr();
 		if (error_ptr != NULL)
 			fprintf(stderr, "Error before: %s\n", error_ptr);
-		exit(1);
+		return false;
 	}
+	return true;
 }
 
 bool GetNumPricesInPricelist(uint8_t priceListIndex, uint8_t * numPrices)
@@ -38,6 +39,9 @@ bool GetNumPricesInPricelist(uint8_t priceListIndex, uint8_t * numPrices)
 //наркомания ебаная но ладно
 uint8_t GetPricelistsNum(void)
 {
+	if (pricelines == NULL)
+		return 0;
+
 	uint8_t pricelistnum;
 	cJSON * priceline = NULL;
 	cJSON_ArrayForEach(priceline, pricelines)
@@ -66,11 +70,12 @@ bool GetPrice(uint8_t priceListIndex, uint8_t itemIndex,uint32_t * priceValue)
 	return false;
 }
 
-int main()
+int main(int argc, char *argv[])
 {
 	uint32_t priceline;
 
-	loadPricesFromFile("./json.txt");
+	loadPricesFromFile(argv[1]);
+
 	unsigned char numpricelists = GetPricelistsNum();
 	printf("number of pricelists is %d\n", numpricelists);
 	unsigned char numpricelines;
